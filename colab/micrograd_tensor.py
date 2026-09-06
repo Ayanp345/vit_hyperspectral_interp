@@ -1,31 +1,3 @@
-"""
-micrograd_tensor.py
-=====================
-A minimal reverse-mode autograd engine over NumPy arrays.
-
-WHY THIS EXISTS: this sandbox has no internet access to install PyTorch, and
-a Vision Transformer (multi-head self-attention, LayerNorm, residual stacks,
-softmax cross-entropy, several layers deep) is too deep to hand-derive
-gradients for cleanly the way the previous project's single-layer Sparse
-Autoencoder was. Rather than fake a training run or skip real gradients,
-this is a genuine (small, unoptimized, CPU-only) autograd engine: every op
-records its inputs and a local vector-Jacobian-product function, and
-`.backward()` walks the graph in reverse topological order. It is checked
-against numerical (finite-difference) gradients below before being trusted
-for anything.
-
-This is NOT a reimplementation of PyTorch internals from memory — it's a
-standard, well-known algorithm (reverse-mode autodiff / backprop, exactly
-what torch.autograd, JAX, and every deep learning framework do under the
-hood) written from scratch in ~200 lines because the from-scratch version is
-literally more available in this sandbox than the C++-backed real thing.
-
-Supported ops: add, sub, mul (incl. broadcast), matmul, transpose, reshape,
-sum, mean, relu, gelu, softmax (last axis), layernorm (last axis),
-cross-entropy. That is exactly what's needed to build a Vision Transformer
-encoder block and nothing more — this is not a general-purpose framework.
-"""
-
 import numpy as np
 
 
