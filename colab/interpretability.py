@@ -1,36 +1,3 @@
-"""
-interpretability.py
-======================
-The actual mechanistic-interpretability toolkit requested: given a trained
-HyperspectralViT and its cached activations, answer "which narrow spectral
-bands is the network prioritizing, and at which layer does it commit to its
-answer?"
-
-Three techniques, each a real, published method:
-
-1. LOGIT LENS (nostalgebraist, 2020; widely used in LLM interpretability,
-   applied here to a ViT for the first time in this project): apply the
-   FINAL classification head to the CLS token's representation at every
-   intermediate layer, not just the last one. This reveals how confidence
-   in the correct class builds up (or gets revised) layer by layer -- i.e.
-   "the model basically knew it was diseased_crop by layer 2, layer 3 just
-   sharpened it" vs "the model flip-flopped."
-
-2. ATTENTION ROLLOUT (Abnar & Zuidema, 2020): multiplies attention matrices
-   across layers (with a residual/identity correction) to get an aggregate
-   "how much does the CLS token's final decision attend to each spatial
-   patch," accounting for information mixing through the whole depth of
-   the network, not just the last layer's raw attention (which is known to
-   be a misleading picture layer-to-layer).
-
-3. SPECTRAL BAND ATTRIBUTION (gradient x input, Shrikumar et al. 2017 style
-   saliency, applied to input reflectance bands rather than pixels): for a
-   given prediction, backprop the target-class logit to the raw input cube
-   and multiply by the input itself, then aggregate over spatial patches to
-   get one importance value PER SPECTRAL BAND. This is the piece that
-   literally answers "which of the 135 bands mattered."
-"""
-
 import numpy as np
 from micrograd_tensor import Tensor
 
