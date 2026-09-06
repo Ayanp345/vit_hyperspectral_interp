@@ -1,32 +1,3 @@
-"""
-vit_model.py
-=============
-A small Vision Transformer, built entirely on micrograd_tensor.Tensor, for
-hyperspectral cube classification. Tokens are SPATIAL patches whose feature
-dimension is the FULL spectral band vector (patch_size x patch_size x 135
-bands, flattened, then linearly projected) -- i.e. exactly "treating 135+
-bands as a massive feature space" per the brief, tokenized spatially so
-self-attention operates over spatial patches while every token still carries
-the complete spectral signature.
-
-Every module exposes its intermediate activations (patch embeddings, per-
-layer residual stream, attention weights per head) so the interpretability
-toolkit (logit lens, attention rollout, band attribution) can inspect them
-directly -- this is the same "activation extraction" workflow as PyTorch
-forward hooks, just explicit since there's no hook API here.
-
-Architecture (deliberately small -- this is a demonstration/validation
-model, not a production foundation model):
-  - Patchify: (H, W, 135) -> (n_patches, patch_dim) where patch_dim =
-    patch_size^2 * 135
-  - Linear patch embedding -> (n_patches, embed_dim)
-  - Learned positional embedding (added)
-  - Prepend a [CLS] token (standard ViT classification convention)
-  - N transformer encoder blocks: pre-LN, multi-head self-attention, GELU MLP,
-    residual connections
-  - Classification head on the final [CLS] token representation
-"""
-
 import numpy as np
 from micrograd_tensor import Tensor
 
