@@ -1,26 +1,3 @@
-"""
-hyperspectral_cube_simulator.py
-==================================
-Generates spatially-coherent hyperspectral CUBES (H x W x Bands) for ViT
-training, not just isolated pixel spectra. Reuses the same physically-
-documented absorption-feature model as the earlier SAE project (chlorophyll,
-red-edge, water bands, mineral Al-OH doublets), but now arranges classes into
-spatially clustered regions with smooth boundaries -- mimicking a real field
-scene with a healthy zone, a disease patch spreading from one corner, a
-water-stress gradient, and bare-soil margins, observed at Pixxel Firefly-like
-spectral resolution (135 bands, 450-950nm VNIR + partial SWIR, 5nm steps ~
-matching Firefly's actual band count).
-
-Scene classes (cube-level label = dominant/target phenomenon):
-  'healthy_field'          : uniform healthy crop, minor natural variation
-  'early_blight_patch'     : healthy field with a spreading early-stage
-                              disease patch (severity ramps spatially)
-  'water_stress_gradient'  : irrigation-gradient water stress across the field
-  'mixed_landuse'          : cultural land-use patchwork (crop + bare soil +
-                              small urban/road inclusion) -- the "localized
-                              cultural land-use pattern" case from the prompt
-"""
-
 import numpy as np
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'spectral_sae_alpha', 'src'))
